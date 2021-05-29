@@ -144,15 +144,17 @@ function Expand-ZstdArchive {
     )
     $ZstdPath = Get-HelperPath -Helper Zstd
     $LogPath = "$(Split-Path $Path)\zstd.log"
-    $ArgList = @('-d', "`"$Path`"")
+    $IsTar = ((strip_ext $Path) -match '\.tar$')
+    $ZstdExtractPath = $DestinationPath + "ZstdTemp.tar" # default extract location for zstd
+    $ArgList = @('-d', '-f', "`"$Path`"")
+    if ($IsTar) {
+        $ArgList += "-o `"$ZstdExtractPath`""
+    }
     $Status = Invoke-ExternalCommand $ZstdPath $ArgList -LogPath $LogPath
     Write-Host $Status
     if (!$Status) {
         abort "Failed to extract files from $Path. `n$(new_issue_msg $app $bucket 'decompress error')"
     }
-    $ZstdExtractPath = (strip_ext $Path) # default extract location for zstd (just remove zst extension)
-    $DecompressedFileName = (Split-Path $ZstdExtractPath -Leaf)
-    $IsTar = ($ZstdExtractPath -match '\.tar$')
     if ($IsTar) {
         Expand-7zipArchive $ZstdExtractPath -DestinationPath $DestinationPath -ExtractDir $ExtractDir -Removal
     }
