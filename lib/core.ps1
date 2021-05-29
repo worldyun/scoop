@@ -407,6 +407,8 @@ function Invoke-ExternalCommand {
     $Process = New-Object System.Diagnostics.Process
     $Process.StartInfo.FileName = $FilePath
     $Process.StartInfo.Arguments = ($ArgumentList | Select-Object -Unique) -join ' '
+    Write-Host $Process.StartInfo.FileName -NoNewline
+    Write-Host $Process.StartInfo.Arguments -NoNewline
     $Process.StartInfo.UseShellExecute = $false
     if ($LogPath) {
         if ($FilePath -match '(^|\W)msiexec($|\W)') {
