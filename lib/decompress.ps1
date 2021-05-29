@@ -144,7 +144,7 @@ function Expand-ZstdArchive {
     )
     $ZstdPath = Get-HelperPath -Helper Zstd
     $LogPath = "$(Split-Path $Path)\zstd.log"
-    $ArgList = @('-d', '-f', "`"$Path`"")
+    $ArgList = @('-d', "`"$Path`"")
     $Status = Invoke-ExternalCommand $ZstdPath $ArgList -LogPath $LogPath
     Write-Host $Status
     if (!$Status) {
