@@ -145,7 +145,7 @@ function Expand-ZstdArchive {
     $ZstdPath = Get-HelperPath -Helper Zstd
     $LogPath = "$(Split-Path $Path)\zstd.log"
     $ArgList = @('-d', '-f', "`"$Path`"")
-    $Status = Invoke-ExternalCommand $ZstdPath $ArgList
+    $Status = Invoke-ExternalCommand $ZstdPath $ArgList -LogPath $LogPath
     if (!$Status) {
         abort "Failed to extract files from $Path. `n$(new_issue_msg $app $bucket 'decompress error')"
     }

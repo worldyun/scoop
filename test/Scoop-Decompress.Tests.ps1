@@ -75,31 +75,31 @@ Describe 'Decompression function' -Tag 'Scoop', 'Decompress' {
         }
     }
 
-    Context "zstd extraction" {
+    # Context "zstd extraction" {
 
-        BeforeAll {
-            if($env:CI) {
-                mock Get-AppFilePath { $env:zstd }
-            } elseif(!(installed zstd)) {
-                scoop install zstd
-            }
+    #     BeforeAll {
+    #         if($env:CI) {
+    #             mock Get-AppFilePath { $env:zstd }
+    #         } elseif(!(installed zstd)) {
+    #             scoop install zstd
+    #         }
 
-            $test = "$working_dir\ZstdTest.tar.zst"
-        }
+    #         $test = "$working_dir\ZstdTest.tar.zst"
+    #     }
 
-        It "extract normal compressed file" -Skip:$isUnix {
-            $to = test_extract "Expand-ZstdArchive" $test
-            $to | Should -Exist
-            "$to\empty" | Should -Exist
-            (Get-ChildItem $to).Count | Should -Be 1
-        }
+    #     It "extract normal compressed file" -Skip:$isUnix {
+    #         $to = test_extract "Expand-ZstdArchive" $test
+    #         $to | Should -Exist
+    #         "$to\empty" | Should -Exist
+    #         (Get-ChildItem $to).Count | Should -Be 1
+    #     }
 
-        It "works with '-Removal' switch (`$removal param)" -Skip:$isUnix {
-            $test | Should -Exist
-            test_extract "Expand-ZstdArchive" $test $true
-            $test | Should -Not -Exist
-        }
-    }
+    #     It "works with '-Removal' switch (`$removal param)" -Skip:$isUnix {
+    #         $test | Should -Exist
+    #         test_extract "Expand-ZstdArchive" $test $true
+    #         $test | Should -Not -Exist
+    #     }
+    # }
 
     Context "msi extraction" {
 
